@@ -106,8 +106,8 @@ create table cart(
 create table cart_items(
                            user_id uuid references users(id) primary key,
                            product_id uuid references products(id),
-                           offer_type varchar not null,
-                           offer_id uuid not null
+                           offer_type varchar,
+                           offer_id uuid
 );
 
 INSERT INTO public.product_categories
@@ -160,4 +160,15 @@ VALUES(uuid_generate_v4(), '4b114942-53b8-4ac7-aed8-b0c2913b98b4');
 INSERT INTO public.cart
 (id, user_id)
 VALUES(uuid_generate_v4(), '35dd14be-3d20-42b6-b839-68abd830db72');
+
+INSERT INTO public.cart_items
+(user_id, product_id)
+VALUES('1b57d3c9-858c-4091-b6d6-728401764683', '81eecfa9-32ac-4cb7-b5cb-21886b4b9d49');
+
+select * from cart;
+select * from cart_items;
+SELECT id, user_id
+FROM public.cart where user_id = '1b57d3c9-858c-4091-b6d6-728401764683';
+
+select cart_items.user_id, cart_items.product_id from cart left join cart_items on cart.user_id = cart_items.user_id where cart.user_id = '1b57d3c9-858c-4091-b6d6-728401764683';
 
