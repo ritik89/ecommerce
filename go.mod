@@ -4,11 +4,13 @@ go 1.19
 
 require (
 	github.com/gin-gonic/gin v1.8.1
+	github.com/google/martian v2.1.0+incompatible
 	github.com/google/uuid v1.1.2
 	github.com/newrelic/go-agent/v3 v3.18.2
 	github.com/newrelic/go-agent/v3/integrations/nrpgx v1.0.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/viper v1.13.0
+	google.golang.org/appengine v1.6.7
 	gorm.io/driver/postgres v1.3.10
 	gorm.io/gorm v1.23.10
 )
