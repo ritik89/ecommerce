@@ -1,0 +1,15 @@
+HOST_TYPE: "local"
+app_base_url: "http://localhost:8080/"
+
+database:
+  postgres:
+    source:
+      host: localhost
+      port: 5432
+      user: "postgres"
+      password: "postgres"
+      db_name: "postgres"
+
+logging:
+  format: "text"
+  level: "debug"
