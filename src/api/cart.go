@@ -8,5 +8,6 @@ import (
 func cart(routerGroup *gin.RouterGroup) *gin.RouterGroup {
 	rg := routerGroup.Group("/cart")
 	rg.GET("", controller.GetUserCart)
+	rg.POST("", controller.PostUserCart)
 	return rg
 }

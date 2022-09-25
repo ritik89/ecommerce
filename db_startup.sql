@@ -104,21 +104,37 @@ create table cart(
 )
 
 create table cart_items(
-                           user_id uuid references users(id) primary key,
+                           id uuid primary key,
+                           user_id uuid references users(id),
                            product_id uuid references products(id),
                            offer_type varchar,
                            offer_id uuid
+);
+
+create table merchant_offers (
+                                 id uuid primary key,
+                                 merchant_id uuid references merchants(id),
+                                 offer_type varchar,
+                                 offer_id uuid
 );
 
 INSERT INTO public.product_categories
 (id, "name", description)
 VALUES(uuid_generate_v4(), 'shoes', 'shoes');
 
+INSERT INTO public.product_categories
+(id, "name", description)
+VALUES(uuid_generate_v4(), 'laptop', 'laptop');
+
 select * from product_categories;
 
 INSERT INTO public.products
 (id, "name", description, product_category, units, price, min_sale_price)
 VALUES(uuid_generate_v4(), 'nike shoes 9', 'nike shoes 9', '5d95676a-0947-43a5-b526-ef1382b2f295', 5, 6.99, 3.00);
+
+INSERT INTO public.products
+(id, "name", description, product_category, units, price, min_sale_price)
+VALUES(uuid_generate_v4(), 'macbook pro', 'mac book rpo', '252f178f-927c-49cd-af1d-b8cf93e1cde3', 8, 1200, 900);
 
 select * from products;
 
@@ -127,6 +143,10 @@ select now();
 INSERT INTO public.product_offers
 (id, description, product_id, discount_percentage, cashback_amount, min_purchase_amount, max_discount_allowed, valid_from, valid_to, is_active)
 VALUES(uuid_generate_v4(), 'nike shoes 9', '81eecfa9-32ac-4cb7-b5cb-21886b4b9d49', 30, 0, 6.00, 3.00, '2022-09-25 17:55:37.959 +0530', '2022-09-30 17:55:37.959 +0530', true);
+
+INSERT INTO public.product_offers
+(id, description, product_id, discount_percentage, cashback_amount, min_purchase_amount, max_discount_allowed, valid_from, valid_to, is_active)
+VALUES(uuid_generate_v4(), 'mac books', '74da012b-7cd0-4344-a016-c5f0cdf4d7f5', 5, 50, 1100, 100, '2022-09-25 17:55:37.959 +0530', '2022-09-30 17:55:37.959 +0530', true);
 
 select * from product_offers;
 
@@ -162,11 +182,12 @@ INSERT INTO public.cart
 VALUES(uuid_generate_v4(), '35dd14be-3d20-42b6-b839-68abd830db72');
 
 INSERT INTO public.cart_items
-(user_id, product_id)
-VALUES('1b57d3c9-858c-4091-b6d6-728401764683', '81eecfa9-32ac-4cb7-b5cb-21886b4b9d49');
+(id, user_id, product_id)
+VALUES(uuid_generate_v4(), '1b57d3c9-858c-4091-b6d6-728401764683', '81eecfa9-32ac-4cb7-b5cb-21886b4b9d49');
+
 
 select * from cart;
-select * from cart_items;
+select * from cart_items where user_id = '1b57d3c9-858c-4091-b6d6-728401764683';
 SELECT id, user_id
 FROM public.cart where user_id = '1b57d3c9-858c-4091-b6d6-728401764683';
 

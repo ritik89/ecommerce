@@ -2,7 +2,9 @@ package service
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
+	"zamp/request"
 	"zamp/src/models"
 	"zamp/src/repository"
 )
@@ -23,6 +25,16 @@ func GetUserCart(ctx *gin.Context, userId string) (interface{}, error) {
 	result["cartTotal"] = cartTotal["cartTotal"]
 	result["cartMinSaleValue"] = cartTotal["cartMinSaleValue"]
 	return result, err
+}
+
+func PostUserCart(ctx *gin.Context, postCartReq request.PostCartRequest) error {
+	err := repository.PostCartItem(ctx, models.CartItems{uuid.New().String(), postCartReq.UserId, postCartReq.ProductId,
+		postCartReq.OfferType, postCartReq.OfferId})
+	if err != nil {
+		log.Errorf("couldn't add item to cart %v", postCartReq)
+		return err
+	}
+	return nil
 }
 
 func GetCartTotal(ctx *gin.Context, cartItems []models.CartItems) (map[string]interface{}, error) {
@@ -49,7 +61,7 @@ func getEffectiveProductPrice(price float32, productMinSalePrice float32, discou
 	if cartTotal+price < productMinSalePrice {
 		return price
 	}
-	discountedPrice := price - cashback - float32(discountPerc)*0.01
+	discountedPrice := price - cashback - float32(discountPerc)*0.01*price
 	if discountedPrice < productMinSalePrice {
 		return productMinSalePrice
 	}

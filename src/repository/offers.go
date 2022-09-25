@@ -30,7 +30,7 @@ func GetOfferDetails(ctx *gin.Context, offerType string, offerId string) (models
 	var offer models.Offer
 	db := postgres.GetDB(ctx)
 	offerTable, _ := getOfferTable(offerType)
-	db.Table(offerTable).Select("*").Where("offer_id = ?", offerId).Scan(&offer)
+	db.Table(offerTable).Select("*").Where("id = ?", offerId).Scan(&offer)
 	return offer, nil
 }
 

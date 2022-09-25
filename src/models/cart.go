@@ -12,6 +12,8 @@ type Cart struct {
 }
 
 type CartItems struct {
+	Id        string `json:"id" sql:"type:uuid;primary_key;""`
+	UserId    string `json:"user_id"`
 	ProductId string `json:"product_id"`
 	OfferType string `json:"offer_type"`
 	OfferId   string `json:"offer_id"`
