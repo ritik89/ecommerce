@@ -15,6 +15,7 @@ func BuildServer() *gin.Engine {
 	v1 := server.Group("/api/v1")
 	products(v1)
 	offers(v1)
+	cart(v1)
 
 	server.GET("/", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{

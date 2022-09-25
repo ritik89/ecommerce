@@ -3,6 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"zamp/src/constants"
 	"zamp/src/database/postgres"
 	"zamp/src/models"
 )
@@ -25,10 +26,23 @@ func GetProductOfferDetails(ctx *gin.Context, productId string, discountPerc int
 	return offers, nil
 }
 
+func GetOfferDetails(ctx *gin.Context, offerType string, offerId string) (models.Offer, error) {
+	var offer models.Offer
+	db := postgres.GetDB(ctx)
+	offerTable, _ := getOfferTable(offerType)
+	db.Table(offerTable).Select("*").Where("offer_id = ?", offerId).Scan(&offer)
+	return offer, nil
+}
+
+func getOfferTable(offerType string) (string, error) {
+	table, _ := constants.OfferTypeToTableMapping[offerType]
+	return table, nil
+}
+
 func buildWhereQueryForProducts(productId string, discountPerc int) string {
 	whereClause := "product_offers.is_active = true "
-	if discountPerc > 0 {
-		whereClause += fmt.Sprintf("AND products.id = %d", productId)
+	if productId != "" {
+		whereClause += fmt.Sprintf("AND products.id = %s", productId)
 	}
 	if discountPerc > 0 {
 		whereClause += fmt.Sprintf("AND product_offers.discount_percentage = %d", discountPerc)
